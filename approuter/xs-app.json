@@ -1,10 +1,23 @@
 {
+  "welcomeFile": "/index.html",
+  "authenticationMethod": "route",
+  "logout": {
+    "logoutEndpoint": "/logout",
+    "logoutPage": "/logout.html"
+  },
   "routes": [
     {
-      "source": "^/(.*)$",
-      "target": "$1",
-      "destination": "srv-api",
+      "source": "^/srv/(.*)$",
+      "target": "/$1",
+      "destination": "mba-srv-api",
+      "authenticationType": "xsuaa",
       "csrfProtection": true
+    },
+    {
+      "source": "^/(.*)",
+      "target": "/$1",
+      "destination": "client-bindings",
+      "authenticationType": "xsuaa"
     }
   ]
 }
