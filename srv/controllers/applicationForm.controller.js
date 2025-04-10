@@ -3,7 +3,7 @@
 const { v4: uuidv4 } = require("uuid");
 
 exports.getClassList = async (req, res) => {
-  let query = `SELECT * FROM CLASS`;
+  let query = `SELECT * FROM DBADMIN_CLASS`;
   await req.db.exec(query, (err, result) => {
     if (err) {
       console.log("getClassList::", err, "query::", query);
@@ -16,7 +16,7 @@ exports.getClassList = async (req, res) => {
 };
 
 exports.getElectiveList = async (req, res) => {
-  let query = `SELECT * FROM ELECTIVE_OPTIONS`;
+  let query = `SELECT * FROM DBADMIN_ELECTIVE_OPTIONS`;
   await req.db.exec(query, (err, result) => {
     if (err) {
       console.log("getElectiveList::", err, "query::", query);
@@ -35,7 +35,7 @@ exports.createUser = async (req, res) => {
 
     // Insert user
     const userInsertQuery = `
-      INSERT INTO USER (ID, NAME, ROLLNUMBER, MOBILENUMBER, CLASS, QUESTION) 
+      INSERT INTO DBADMIN_USER (ID, NAME, ROLLNUMBER, MOBILENUMBER, CLASS, QUESTION) 
       VALUES (?, ?, ?, ?, ?, ?)
     `;
 
@@ -65,7 +65,7 @@ exports.createUser = async (req, res) => {
       return new Promise((resolve, reject) => {
         const electiveId = uuidv4();
         const electiveQuery = `
-          INSERT INTO USER_ELECTIVE (ID, ELECTIVENAME, USERID) 
+          INSERT INTO DBADMIN_USER_ELECTIVE (ID, ELECTIVENAME, USERID) 
           VALUES (?, ?, ?)
         `;
         req.db.exec(
