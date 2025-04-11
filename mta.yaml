@@ -1,4 +1,4 @@
-_schema-version: '3.3'
+_schema-version: "3.3"
 ID: mba-application-form
 version: 1.0.0
 
@@ -19,7 +19,6 @@ build-parameters:
         - npm run build --prefix ./app
 
 modules:
-
   - name: mba-client
     type: html5
     path: app
@@ -31,14 +30,13 @@ modules:
       builder: npm
       supported-platforms:
         - "CF"
-      build-result: build   # Where your React artifacts end up (e.g. /build)
+      build-result: build # Where your React artifacts end up (e.g. /build)
     provides:
       - name: client-bindings
         properties:
           client-url: ${default-url}
     requires:
       - name: mba-uaa
-
 
   - name: mba-srv
     type: nodejs
@@ -56,9 +54,8 @@ modules:
       - name: mba-uaa
       - name: mba-db
       # - name: mba-connectivity
-      # - name: mba-destination
+      - name: mba-destination-service
 
- 
   - name: mba-db-deployer
     type: hdb
     path: gen/db
@@ -66,7 +63,6 @@ modules:
       buildpack: nodejs_buildpack
     requires:
       - name: mba-db
-
 
   - name: mba-approuter
     type: approuter.nodejs
@@ -87,7 +83,7 @@ modules:
       - name: srv-api
         group: destinations
         properties:
-          name: mba-srv-api
+          name: srv-api
           url: ~{srv-url}
           forwardAuthToken: true
           timeout: 9999999
@@ -104,22 +100,22 @@ modules:
       INCOMING_REQUEST_TIMEOUT: 0
 
 resources:
- 
   - name: mba-uaa
     type: org.cloudfoundry.managed-service
     parameters:
       service: xsuaa
       service-plan: application
       path: ./xs-security.json
-      config:
-        xsappname: mba-application-form-${org}-${space}
-        tenant-mode: dedicated
 
+  - name: mba-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-name: mba-destination-service
+      service-plan: lite
 
   - name: mba-db
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
       service-plan: hdi-shared
-
-  

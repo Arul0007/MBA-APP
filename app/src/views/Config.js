@@ -1,10 +1,9 @@
 /* eslint-disable import/no-anonymous-default-export */
 export default {
-    BASEURL: "http://localhost:4200",
-    API_BASEURI: "http://localhost:5000", //For Local DEV
-  
-    GET_CLASS_LIST: "/users/getClassList",
-    GET_ELECTIVE_LIST: "/users/getElectiveList",
-    CREATE_USER: "/users/createUser",
-  };
-  
+  SAP_SSO_ENABLED: process.env.REACT_APP_MODE === "prod" ? true : false,
+  LOCAL_DEV_NODE_URL: "http://localhost:4000", //For Local DEV
+
+  GET_CLASS_LIST: "/api/applicationForm/getClassList",
+  GET_ELECTIVE_LIST: "/api/applicationForm/getElectiveList",
+  CREATE_USER: "/api/applicationForm/createUser",
+};
