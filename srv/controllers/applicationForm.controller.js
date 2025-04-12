@@ -1,31 +1,42 @@
 // const hanaDb = require("../../db/hanadb");
-
 const { v4: uuidv4 } = require("uuid");
 
 exports.getClassList = async (req, res) => {
-  let query = `SELECT * FROM DBADMIN_CLASS`;
-  await req.db.exec(query, (err, result) => {
-    if (err) {
-      console.log("getClassList::", err, "query::", query);
-      return res.status(500).send(err);
-    }
-    if (result) {
-      res.status(200).send(result);
-    }
-  });
+  try {
+    console.log("controller reached:::1");
+    let query = `SELECT * FROM DBADMIN_CLASS`;
+    await req.db.exec(query, (err, result) => {
+      if (err) {
+        console.log("getClassList::", err, "query::", query);
+        return res.status(500).send(err);
+      }
+      if (result) {
+        res.status(200).send(result);
+      }
+    });
+  } catch (error) {
+    console.error("Error::", error);
+    res.status(500).send("Server Error in getClassList");
+  }
 };
 
 exports.getElectiveList = async (req, res) => {
-  let query = `SELECT * FROM DBADMIN_ELECTIVE_OPTIONS`;
-  await req.db.exec(query, (err, result) => {
-    if (err) {
-      console.log("getElectiveList::", err, "query::", query);
-      return res.status(500).send(err);
-    }
-    if (result) {
-      res.status(200).send(result);
-    }
-  });
+  try {
+    console.log("controller reached:::2");
+    let query = `SELECT * FROM DBADMIN_ELECTIVE_OPTIONS`;
+    await req.db.exec(query, (err, result) => {
+      if (err) {
+        console.log("getElectiveList::", err, "query::", query);
+        return res.status(500).send(err);
+      }
+      if (result) {
+        res.status(200).send(result);
+      }
+    });
+  } catch (error) {
+    console.error("Error::", error);
+    res.status(500).send("Server Error in getElectiveList");
+  }
 };
 
 exports.createUser = async (req, res) => {
@@ -90,5 +101,36 @@ exports.createUser = async (req, res) => {
   } catch (error) {
     console.error("Error::", error);
     res.status(500).send("Server Error");
+  }
+};
+
+exports.checkElectiveOption = async (req, res) => {
+  try {
+    let electiveName = req.params.electiveName;
+    let query = `SELECT COUNT(*) "count" FROM DBADMIN_USER_ELECTIVE WHERE ELECTIVENAME='${electiveName}'`;
+    await req.db.exec(query, (err, result) => {
+      if (err) {
+        console.log("getElectiveList::", err, "query::", query);
+        return res.status(500).send(err);
+      }
+      if (result) {
+        console.log("result:::count", result[0]);
+        if (result[0]?.count >= 5) {
+          res.status(200).send({
+            status: "Success",
+            message: `${electiveName} elective has reached the maximum number of responses.`,
+            isDisabled: true,
+          });
+        } else {
+          res.status(200).send({
+            status: "Success",
+            isDisabled: false,
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error::", error);
+    res.status(500).send("Server Error in checkElectiveOption");
   }
 };

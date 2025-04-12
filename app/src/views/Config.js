@@ -6,4 +6,5 @@ export default {
   GET_CLASS_LIST: "/api/applicationForm/getClassList",
   GET_ELECTIVE_LIST: "/api/applicationForm/getElectiveList",
   CREATE_USER: "/api/applicationForm/createUser",
+  CHECK_ELECTIVE_OPTION: "/api/applicationForm/checkElectiveOption",
 };
